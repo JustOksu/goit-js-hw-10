@@ -3,11 +3,9 @@ import 'flatpickr/dist/flatpickr.min.css';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-document.getElementById('start-btn').addEventListener('click', () => {
-  startTimer();
-  document.getElementById('start-btn').disabled = true;
-  document.getElementById('datetime-picker').disabled = true;
-});
+document.getElementById('start-btn').addEventListener('click', startTimer);
+
+let userSelectedDate;
 
 const datePicker = flatpickr('#datetime-picker', {
   enableTime: true,
@@ -15,7 +13,7 @@ const datePicker = flatpickr('#datetime-picker', {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    const userSelectedDate = selectedDates[0];
+    userSelectedDate = selectedDates.pop();
     const currentDate = new Date();
     if (userSelectedDate < currentDate) {
       iziToast.error({
@@ -29,12 +27,12 @@ const datePicker = flatpickr('#datetime-picker', {
   },
 });
 
-document.getElementById('start-btn').addEventListener('click', startTimer);
-
 function startTimer() {
-  const userSelectedDate = datePicker.selectedDates[0];
+  if (!userSelectedDate) return;
+
   document.getElementById('start-btn').disabled = true;
   document.getElementById('datetime-picker').disabled = true;
+
   const timerInterval = setInterval(() => {
     const remainingTime = userSelectedDate - new Date();
     if (remainingTime <= 0) {
