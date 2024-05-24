@@ -3,7 +3,8 @@ import 'flatpickr/dist/flatpickr.min.css';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-document.getElementById('start-btn').addEventListener('click', startTimer);
+document.querySelector('[data-start]').addEventListener('click', startTimer);
+document.querySelector('[data-start]').disabled = true;
 
 let userSelectedDate;
 
@@ -20,9 +21,9 @@ const datePicker = flatpickr('#datetime-picker', {
         title: 'Error',
         message: 'Please choose a date in the future',
       });
-      document.getElementById('start-btn').disabled = true;
+      document.querySelector('[data-start]').disabled = true;
     } else {
-      document.getElementById('start-btn').disabled = false;
+      document.querySelector('[data-start]').disabled = false;
     }
   },
 });
@@ -30,7 +31,7 @@ const datePicker = flatpickr('#datetime-picker', {
 function startTimer() {
   if (!userSelectedDate) return;
 
-  document.getElementById('start-btn').disabled = true;
+  document.querySelector('[data-start]').disabled = true;
   document.getElementById('datetime-picker').disabled = true;
 
   const timerInterval = setInterval(() => {
